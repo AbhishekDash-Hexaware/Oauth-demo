@@ -1,0 +1,19 @@
+{
+  "name": "oauth-exp",
+  "version": "1.0.0",
+  "description": "implementing oauth2.0",
+  "main": "app.js",
+  "scripts": {
+    "test": "node app.js"
+  },
+  "author": "abhishek dash",
+  "license": "ISC",
+  "dependencies": {
+    "ejs": "^2.5.7",
+    "express": "^4.16.2",
+    "mongoose": "^5.0.6",
+    "morgan": "^1.9.0",
+    "passport": "^0.4.0",
+    "passport-google-oauth20": "^1.0.0"
+  }
+}
