@@ -217,7 +217,7 @@ input, textarea, button {
 }
 
 .headerSize {
-    min-height: 260px;
+    min-height: 10px;
 }
 
 .headerSizeInAboutUs {
@@ -258,7 +258,7 @@ input, textarea, button {
     height: 100%;
     display: table;
     overflow: hidden;
-    margin-bottom: -210px;
+    margin-bottom: -280px;
 }
 .swiper-container {
     -moz-perspective: 300px;
@@ -1309,7 +1309,7 @@ a {
          padding-top: 1px;
          margin-left: 0px;
          margin-right: 0px;
-         margin-top: 135px;
+         margin-top: 107px;
     }
 
         .square {

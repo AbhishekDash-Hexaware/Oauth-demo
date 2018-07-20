@@ -1,16 +1,97 @@
 const passport =require("passport");
-const googleStartegy =require("passport-google-oauth20").Strategy;
+const GoogleStrategy =require("passport-google-oauth20").Strategy;
+const User= require("../model/user-model")
+
+
+passport.serializeUser((user,done)=>{
+    
+    done(null,user.id);
+
+})
+
+passport.deserializeUser((id,done)=>{
+
+    User.findById(id).then((user)=>{
+
+        done(null,user);
+
+    })
+    
+
+})
 
 passport.use(
-    new googleStartegy({
+    new GoogleStrategy({
         callbackURL:"/auth/google/redirect",
         clientID: "381482749483-i3pg3jjmntpof4fgpc7rpf8i2a35m9o5.apps.googleusercontent.com",
         clientSecret: "hHK7PiYpeFNdwiWW_OsXX8bf"
     },(accessToken,refreshToken,profile,done)=>{
         
-        console.log("passport callback called")
-        console.log(profile);
+        User.findOne({googleId:profile.id}).then((currentUser)=>{
+
+            if(currentUser){
+
+                console.log("User exits",currentUser);
+                done(null,currentUser);
+
+            }else{
+
+                new User({
+                    username: profile.displayName,
+                    googleId: profile.id
+                }).save().then((newUser)=>{
+                    console.log("new user created"+newUser);
+                    done(null,newUser);
+                  })
+
+            }
+
+        })
+       
 
     })
-
 )
+
+
+
+// const passport = require('passport');
+// const GoogleStrategy = require('passport-google-oauth20').Strategy;
+// const keys = require('./keys');
+// const User = require('../models/user-model');
+
+// passport.serializeUser((user, done) => {
+//     done(null, user.id);
+// });
+
+// passport.deserializeUser((id, done) => {
+//     User.findById(id).then((user) => {
+//         done(null, user);
+//     });
+// });
+
+// passport.use(
+//     new GoogleStrategy({
+//         // options for google strategy
+//         clientID: keys.google.clientID,
+//         clientSecret: keys.google.clientSecret,
+//         callbackURL: '/auth/google/redirect'
+//     }, (accessToken, refreshToken, profile, done) => {
+//         // check if user already exists in our own db
+//         User.findOne({googleId: profile.id}).then((currentUser) => {
+//             if(currentUser){
+//                 // already have this user
+//                 console.log('user is: ', currentUser);
+//                 done(null, currentUser);
+//             } else {
+//                 // if not, create user in our db
+//                 new User({
+//                     googleId: profile.id,
+//                     username: profile.displayName
+//                 }).save().then((newUser) => {
+//                     console.log('created new user: ', newUser);
+//                     done(null, newUser);
+//                 });
+//             }
+//         });
+//     })
+// );

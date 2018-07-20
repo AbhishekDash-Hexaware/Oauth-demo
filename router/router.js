@@ -1,22 +1,32 @@
 
-const rourter = require("express").Router();
+const router = require("express").Router();
 const passport = require("passport");
 
-rourter.get('/login',(req,res)=>{
+router.get('/login',(req,res)=>{
     res.render('login');
 })
 
-rourter.get('/logout',(req,res)=>{
+router.get('/logout',(req,res)=>{
     res.send("handle with passport.js");
 })
 
-rourter.get('/google',passport.authenticate('google',{
+router.get('/google',passport.authenticate('google',{
     scope:['profile'] 
 }))
 
-rourter.get('/google/redirect/',passport.authenticate('google'),(req,res)=>{
-    res.send("reached callback uri");
+// router.get('/google/redirect/',passport.authenticate('google'),(req,res)=>{
+//     res.send(req.user);
+// })
+
+router.get('/google/redirect', passport.authenticate('google'), (req, res) => {
+    res.send(req.user);
+    // res.redirect('/profile');
+});
+
+
+router.get('/',(req,res)=>{
+    res.sendFile('../content/index.js');
 })
 
 
-module.exports =rourter;
+module.exports =router;
